@@ -49,6 +49,7 @@ namespace WinHello
             table_width = (panel1.Width)-50;
             table_height = (panel1.Height)-50;
             
+            /*
             //buffer
             currentContext = BufferedGraphicsManager.Current;
             gBuffer = currentContext.Allocate(
@@ -56,9 +57,10 @@ namespace WinHello
                 new Rectangle(0, 0, table_width+50, table_height+50)
              );
             g = gBuffer.Graphics;
+            */
 
             //繪圖裝置 初始化
-            //g = panel1.CreateGraphics();     
+            g = panel1.CreateGraphics();     
             for (int i = 1; i < 10; i++)            //new 每個球 ball
                 balls[i] = new ball(DefPosX[i-1], DefPosY[i-1], Color.FromArgb(255, (i * 100) % 256, (i * 50) % 256, (i * 25) % 256), i);
             balls[0] = new ball(200, 260, Color.FromArgb(255, 255, 255, 255), 0);
@@ -96,7 +98,7 @@ namespace WinHello
                 br = new SolidBrush(cc);     //球顏色的刷子
                 ball_Id = i;                                   //球編號
             }
-            public void draw()
+            public void draw(Graphics g)
             {      //畫 球物件 自己
                 g.FillEllipse(br, (int)(PosX - radius), (int)(PosY - radius), diam, diam);          //畫橢圓（球刷子，左上角 坐標，直徑寬，直徑高）
             }
@@ -111,7 +113,7 @@ namespace WinHello
                 DownX = x;
                 DownY = y;
             }
-            public void drawStick()
+            public void drawStick(Graphics g)
             {
                 double rlong = radius * 20;
                 double rball = radius * 1.5;
@@ -132,7 +134,7 @@ namespace WinHello
                 );
 
             }
-            public void drawRectangle()
+            public void drawRectangle(Graphics g)
             {
                 g.DrawRectangle(Pens.HotPink, (float)(DownX - 2), (float)(DownY - 2), 8, 8); // 點擊點 畫小方塊
             }
@@ -190,25 +192,30 @@ namespace WinHello
                 b0.speed = b1.speed = spd_average;    //  碰撞 後 先大略平均分配 兩球的速度
                                                   // 白球速度 == 紅球速度 == 兩球的速度 和 /2
             }
+
+            if (checkBox1.Checked){   //  有打鉤，暫停來拉回看看
+                timer1.Stop();                
+                panel1.Refresh();  // 顯示 球 碰撞後 重疊的情形
+            }
         }
 
         private void Panel1_Paint(object sender, PaintEventArgs e)
         {
-            g.Clear(panel1.BackColor);
+            //g.Clear(panel1.BackColor);
             //用g來繪圖  寫進 gbuffer 記憶體
             for (int i = 0; i < 10; i++)
-                balls[i].draw();
+                balls[i].draw(e.Graphics);
             if (balls[0].speed < 0.0001)
             {
-                balls[0].drawStick();
-                balls[0].drawRectangle();
+                balls[0].drawStick(e.Graphics);
+                balls[0].drawRectangle(e.Graphics);
             }
-             gBuffer.Render(e.Graphics);
+             //gBuffer.Render(e.Graphics);
        }
         private void Panel1_MouseDown(object sender, MouseEventArgs e)
         {
-            g.DrawRectangle(Pens.HotPink, e.X - 2, e.Y - 2, 4, 4); // 點擊點 畫小方塊
-            gBuffer.Render();
+            //g.DrawRectangle(Pens.HotPink, e.X - 2, e.Y - 2, 4, 4); // 點擊點 畫小方塊
+            //gBuffer.Render();
             double a = Math.Atan2(e.Y - balls[0].PosY, e.X - balls[0].PosX); // e:滑鼠 點擊處坐標
             balls[0].setAng(a); // 角度
             balls[0].posMouse(e.X, e.Y);
@@ -273,6 +280,13 @@ namespace WinHello
         {
             panelStop.Visible = false;
         }
+
+        private void checkBox1_CheckedChange(object sender, EventArgs e)
+        {
+            if (!checkBox1.Checked)
+                timer1.Start();
+        }
+
         private void buttonNewGame_Click(object sender, EventArgs e)
         {
 

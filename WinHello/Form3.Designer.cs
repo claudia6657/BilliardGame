@@ -32,6 +32,7 @@ namespace WinHello
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form3));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.vScrollBar2 = new System.Windows.Forms.VScrollBar();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.panelStop = new System.Windows.Forms.Panel();
@@ -64,6 +65,17 @@ namespace WinHello
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.Panel1_Paint);
             this.panel1.DoubleClick += new System.EventHandler(this.Panel1_DoubleClick);
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Panel1_MouseDown);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(707, 26);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(116, 27);
+            this.checkBox1.TabIndex = 11;
+            this.checkBox1.Text = "checkBox";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChange);
             // 
             // vScrollBar2
             // 
@@ -204,6 +216,7 @@ namespace WinHello
             // panelBoard
             // 
             this.panelBoard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.panelBoard.Controls.Add(this.checkBox1);
             this.panelBoard.Controls.Add(this.panelflag);
             this.panelBoard.Controls.Add(this.buttonBack);
             this.panelBoard.Controls.Add(this.labelname);
@@ -254,5 +267,6 @@ namespace WinHello
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.VScrollBar vScrollBar1;
         private System.Windows.Forms.VScrollBar vScrollBar2;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
